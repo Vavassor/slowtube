@@ -1,13 +1,18 @@
 :root {
   --color-backdrop: #000000;
-  --color-black: #000000;
-  --color-focus-indicator: #000000;
-  --color-input-border: #000000;
+  --color-focus-indicator: #49a4ce;
+  --color-input-border: #666666;
+  --color-invalid: #dc3545;
+  --color-on-backdrop: #ffffff;
   --color-on-primary: #ffffff;
-  --color-on-structure: #000000;
-  --color-primary: #0051ff;
-  --color-primary-highlight: #132b96;
-  --color-structure: #afafaf;
+  --color-on-surface: #0f0f0f;
+  --color-on-structure: #0f0f0f;
+  --color-primary: #0078d4;
+  --color-primary-highlight: #1936b4;
+  --color-slider-thumb: #000000;
+  --color-slider-track: #cfcfcf;
+  --color-structure: #e9e9e9;
+  --color-structure-highlight: #dfdfdf;
 }
 
 *,
@@ -32,7 +37,9 @@ a:focus {
 }
 
 body {
+  color: var(--color-on-surface);
   font-family: "Lato", sans-serif;
+  line-height: 1.5;
   margin: 0;
   min-width: 320px;
   height: 100%;
@@ -44,6 +51,7 @@ button {
   border: none;
   color: var(--color-on-primary);
   font-size: 1rem;
+  font-weight: 600;
   line-height: 1.5;
   padding: 4px 12px;
 }
@@ -53,9 +61,19 @@ button[type="submit"] {
   -webkit-appearance: none;
 }
 
+button[type="button"]:-moz-focusring,
+button[type="submit"]:-moz-focusring {
+  outline: none;
+}
+
 button:focus {
   outline: none;
   box-shadow: 0 0 0 2px var(--color-focus-indicator);
+}
+
+button:focus,
+button:hover {
+  background: var(--color-primary-highlight);
 }
 
 html {
@@ -128,9 +146,18 @@ select {
   color: var(--color-on-structure);
 }
 
+.button-secondary:focus,
+.button-secondary:hover {
+  background: var(--color-structure-highlight);
+}
+
 .control-label {
   display: block;
   margin-bottom: 4px;
+}
+
+.control-label--required::after {
+  content: "\2009*";
 }
 
 .copy-to-clipboard {
@@ -145,7 +172,6 @@ select {
   border: 1px solid var(--color-input-border);
   display: block;
   flex-grow: 1;
-  min-height: calc(1.5rem + 16px);
   padding: 8px 16px;
 }
 
@@ -155,6 +181,11 @@ select {
 
 .form-control {
   margin-bottom: 16px;
+}
+
+.invalid-message {
+  color: var(--color-invalid);
+  margin-block-start: 4px;
 }
 
 .main-footer {
@@ -177,7 +208,7 @@ select {
 
 .main-header__heading:link,
 .main-header__heading:visited {
-  color: var(--color-black);
+  color: var(--color-on-surface);
 }
 
 .player-frame {
@@ -188,13 +219,14 @@ select {
   justify-content: center;
 }
 
-.slider {
+.player-placeholder {
+  align-items: center;
+  color: var(--color-on-backdrop);
   display: flex;
-}
-
-.slider__value {
-  padding-left: 8px;
-  width: 50px;
+  justify-content: center;
+  height: 390px;
+  text-align: center;
+  width: 640px;
 }
 
 .radio-button {
@@ -207,10 +239,81 @@ select {
   margin-left: 4px;
 }
 
+.slider {
+  align-items: center;
+  display: flex;
+}
+
+.slider__input {
+  -webkit-appearance: none;
+  background: transparent;
+  padding: 8px 0;
+}
+
+.slider__input:focus {
+  outline: none;
+}
+
+.slider__input::-moz-range-track {
+  background: var(--color-slider-track);
+  height: 8px;
+  width: 100%;
+}
+
+.slider__input::-moz-range-thumb {
+  border: none;
+  border-radius: 999px;
+  background: var(--color-slider-thumb);
+  height: 24px;
+  width: 12px;
+}
+
+.slider__input:focus::-moz-range-thumb {
+  box-shadow: 0 0 0 2px var(--color-focus-indicator);
+}
+
+.slider__input::-webkit-slider-runnable-track {
+  background: var(--color-slider-track);
+  height: 8px;
+  width: 100%;
+}
+
+.slider__input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border-radius: 999px;
+  background: var(--color-slider-thumb);
+  height: 24px;
+  margin-top: -8px;
+  width: 12px;
+}
+
+.slider__input:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 2px var(--color-focus-indicator);
+}
+
+.slider__value {
+  padding-left: 8px;
+  width: 50px;
+}
+
+.text-field__input--invalid[type="text"] {
+  border-color: var(--color-invalid);
+}
+
 .url-creation-frame {
   margin: auto;
   max-width: 640px;
   padding: 0 16px;
+}
+
+@media only screen and (min-width: 500px) {
+  .playback-rate-frame {
+    display: flex;
+  }
+
+  .playback-rate-type {
+    margin-left: 16px;
+  }
 }
 
 @media only screen and (min-width: 1024px) {

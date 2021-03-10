@@ -46,6 +46,9 @@ function onYouTubeIframeAPIReady() {
       onReady: (event) => handleReadyPlayer(event, parameters),
     },
     height: "390",
+    playerVars: {
+      autoplay: 1,
+    },
     videoId: parameters.videoId,
     width: "640",
   });
@@ -63,11 +66,56 @@ const handleInputPlaybackRate = (event, playbackRateValue) => {
   playbackRateValue.textContent = value;
 };
 
+const getClipboardWritePermission = async () => {
+  let permissionResult;
+  try {
+    permissionResult = await navigator.permissions.query({
+      name: "clipboard-write",
+    });
+  } catch (error) {
+    // Assume that the permission is not supported and no permission is
+    // required (default to permission granted).
+    return true;
+  }
+  return (
+    permissionResult.state === "granted" || permissionResult.state === "prompt"
+  );
+};
+
+const copyToClipboard = async (text) => {
+  if (!navigator.clipboard) {
+    throw new Error("Clipboard API unsupported");
+  }
+  const isGranted = await getClipboardWritePermission();
+  if (!isGranted) {
+    throw new Error("Clipboard permission is not granted.");
+  }
+  await navigator.clipboard.writeText(text);
+};
+
+const copyToClipboardFallback = (textInput) => {
+  textInput.select();
+  document.execCommand("copy");
+};
+
+const handleClickCopyToClipboard = (event) => {
+  const createdUrl = document.getElementById("created-url");
+  copyToClipboard(createdUrl.value).catch((error) => {
+    copyToClipboardFallback(createdUrl);
+  });
+};
+
+const setUpCopyToClipboardButton = () => {
+  const button = document.getElementById("copy-to-clipboard");
+  button.addEventListener("click", handleClickCopyToClipboard);
+};
+
 const setUpPlaybackRateSlider = () => {
   const playbackRate = document.getElementById("playback-rate-slider");
   const playbackRateValue = document.getElementById(
     "playback-rate-slider-value"
   );
+  playbackRateValue.textContent = playbackRate.value;
   playbackRate.addEventListener("input", (event) => {
     handleInputPlaybackRate(event, playbackRateValue);
   });
@@ -145,6 +193,24 @@ const getVideoIdFromYoutubeUrl = (urlString) => {
   }
 };
 
+const validateUrlCreation = (videoId) => {
+  const invalidMessage = document.getElementById(
+    "youtube-url__invalid-message"
+  );
+  const textFieldInput = document.getElementById("youtube-url");
+
+  if (!videoId) {
+    invalidMessage.textContent = "Please enter a valid YouTube video URL.";
+    textFieldInput.classList.add("text-field__input--invalid");
+    return false;
+  } else {
+    invalidMessage.textContent = "";
+    textFieldInput.classList.remove("text-field__input--invalid");
+  }
+
+  return true;
+};
+
 const handleSubmitUrlCreation = (event) => {
   event.preventDefault();
 
@@ -156,8 +222,11 @@ const handleSubmitUrlCreation = (event) => {
   const youtubeUrl = elements.namedItem("youtube-url");
   const videoId = getVideoIdFromYoutubeUrl(youtubeUrl.value);
 
-  const generatedUrlOutput = document.getElementById("created-url");
-  generatedUrlOutput.value = createUrl({ playbackRate, videoId });
+  const isValid = validateUrlCreation(videoId);
+  if (isValid) {
+    const generatedUrlOutput = document.getElementById("created-url");
+    generatedUrlOutput.value = createUrl({ playbackRate, videoId });
+  }
 };
 
 const setUrlCreationSubmissionHandler = () => {
@@ -170,6 +239,7 @@ const setUpForm = () => {
   setUpPlaybackRateType();
   setUpPlaybackRateSlider();
   setUrlCreationSubmissionHandler();
+  setUpCopyToClipboardButton();
 };
 
 const handleDomContentLoaded = () => {
