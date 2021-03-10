@@ -111,6 +111,16 @@ const createUrl = (spec) => {
   return `https://vavassor.github.io/slowtube?${urlSearchParams.toString()}`;
 };
 
+const getYoutubeUrlType = (url) => {
+  if (url.hostname === "youtu.be") {
+    return "short";
+  }
+  if (url.pathname.slice(1, 6) === "embed") {
+    return "embed";
+  }
+  return "basic";
+};
+
 const getVideoIdFromYoutubeUrl = (urlString) => {
   let url;
   try {
@@ -118,8 +128,21 @@ const getVideoIdFromYoutubeUrl = (urlString) => {
   } catch (error) {
     return null;
   }
-  const urlSearchParams = new URLSearchParams(url.search);
-  return urlSearchParams.get("v");
+
+  const type = getYoutubeUrlType(url);
+
+  switch (type) {
+    case "basic": {
+      const urlSearchParams = new URLSearchParams(url.search);
+      return urlSearchParams.get("v");
+    }
+    case "embed": {
+      return url.pathname.slice(7);
+    }
+    case "short": {
+      return url.pathname.slice(1);
+    }
+  }
 };
 
 const handleSubmitUrlCreation = (event) => {
