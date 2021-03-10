@@ -1,0 +1,64 @@
+:root {
+  --color-focus-indicator: #000000;
+  --color-primary: #0051ff;
+  --color-primary-highlight: #132b96;
+}
+
+a:link,
+a:visited {
+  color: var(--color-primary);
+}
+
+a:focus,
+a:hover {
+  color: var(--color-primary-highlight)
+}
+
+a:focus {
+  outline: 2px solid var(--color-focus-indicator);
+  outline-offset: 2px;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+}
+
+html {
+  height: 100%;
+}
+
+main {
+  flex-grow: 1;
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  max-width: 800px;
+}
+
+.body-frame {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+}
+
+.control-label {
+  display: block;
+}
+
+.main-footer {
+  max-width: 800px;
+  padding: 16px;
+}
+
+.slider {
+  display: flex;
+}
+
+.slider__value {
+  padding-left: 8px;
+  width: 50px;
+}
