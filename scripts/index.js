@@ -202,10 +202,12 @@ const validateUrlCreation = (videoId) => {
   if (!videoId) {
     invalidMessage.textContent = "Please enter a valid YouTube video URL.";
     textFieldInput.classList.add("text-field__input--invalid");
+    textFieldInput.setAttribute("aria-invalid", "true");
     return false;
   } else {
     invalidMessage.textContent = "";
     textFieldInput.classList.remove("text-field__input--invalid");
+    textFieldInput.setAttribute("aria-invalid", "false");
   }
 
   return true;
