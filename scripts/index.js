@@ -157,7 +157,7 @@ const handleSubmitUrlCreation = (event) => {
   const videoId = getVideoIdFromYoutubeUrl(youtubeUrl.value);
 
   const generatedUrlOutput = document.getElementById("created-url");
-  generatedUrlOutput.textContent = createUrl({ playbackRate, videoId });
+  generatedUrlOutput.value = createUrl({ playbackRate, videoId });
 };
 
 const setUrlCreationSubmissionHandler = () => {
