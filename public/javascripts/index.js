@@ -157,9 +157,7 @@ const setUpPlaybackRateType = () => {
 const createUrl = (spec) => {
   const urlSearchParams = new URLSearchParams();
   urlSearchParams.set("playback_rate", spec.playbackRate);
-  return `https://slowtube.net/slowtube/${
-    spec.videoId
-  }?${urlSearchParams.toString()}`;
+  return `https://slowtube.net/${spec.videoId}?${urlSearchParams.toString()}`;
 };
 
 const getYoutubeUrlType = (url) => {
