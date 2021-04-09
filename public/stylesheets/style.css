@@ -84,14 +84,14 @@ html {
 input[type="radio"] {
   -webkit-appearance: none;
   appearance: none;
-  background: url("../Assets/Images/radio-button-unchecked-24px.svg");
+  background: url("/images/radio-button-unchecked-24px.svg");
   border-radius: 999px;
   height: 24px;
   width: 24px;
 }
 
 input[type="radio"]:checked {
-  background: url("../Assets/Images/radio-button-checked-24px.svg");
+  background: url("/images/radio-button-checked-24px.svg");
 }
 
 input[type="radio"]:focus {
@@ -123,7 +123,7 @@ main {
 select {
   -webkit-appearance: none;
   appearance: none;
-  background-image: url("../Assets/Images/arrow-drop-down-24px.svg");
+  background-image: url("/images/arrow-drop-down-24px.svg");
   background-size: 24px 24px;
   background-position: right 4px bottom 4px;
   background-repeat: no-repeat;

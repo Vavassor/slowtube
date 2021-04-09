@@ -1,0 +1,63 @@
+extends layout
+
+block content
+  .body-frame
+    header.main-header
+      a.main-header__heading(href='#{websiteUrl}') slowtube
+    main
+      .player-frame
+        #player
+          .player-placeholder No video specified in the URL
+      .url-creation-frame
+        h2 Create a URL
+        form#url-creation-form(novalidate='')
+          .form-control
+            label.control-label.control-label--required(for='youtube-url') YouTube URL
+            input#youtube-url(aria-describedby='youtube-url__invalid-message' aria-required='true' name='youtube-url' type='text')
+            #youtube-url__invalid-message.invalid-message
+          .playback-rate-frame
+            div
+              #playback-rate-slider-section.form-control
+                label.control-label(for='playback-rate-slider') Playback Rate
+                .slider
+                  input#playback-rate-slider.slider__input(list='common-playback-rates' max='2' min='0.25' name='playback-rate-custom' step='0.05' type='range' value='1')
+                  datalist#common-playback-rates
+                    option(label='0.25' value='0.25')
+                    option(value='0.5')
+                    option(value='0.75')
+                    option(label='1' value='1')
+                    option(value='1.25')
+                    option(value='1.5')
+                    option(value='1.75')
+                    option(label='2' value='2')
+                  span#playback-rate-slider-value.slider__value 1
+              #playback-rate-select-field-section.form-control
+                label.control-label(for='playback-rate-select-field') Playback Rate
+                select#playback-rate-select-field(name='playback-rate-common')
+                  option(value='0.25') 0.25
+                  option(value='0.5') 0.5
+                  option(value='0.75') 0.75
+                  option(selected='' value='1') 1
+                  option(value='1.25') 1.25
+                  option(value='1.5') 1.5
+                  option(value='1.75') 1.75
+                  option(value='2') 2
+            .form-control.playback-rate-type(aria-labelledby='playback-rate-type-label' role='radiogroup')
+              #playback-rate-type-label.control-label
+                | Playback Rate Type
+              .radio-button
+                input#playback-rate-type-common(name='playback-rate-type' type='radio' value='common')
+                label.radio-button__label(for='playback-rate-type-common') Common
+              .radio-button
+                input#playback-rate-type-custom(name='playback-rate-type' type='radio' value='custom')
+                label.radio-button__label(for='playback-rate-type-custom') Custom
+          button(type='submit') Create URL
+          .created-url-section
+            h3 Created URL
+            .created-url-frame
+              input#created-url.created-url-output(readonly='' type='text')
+              button#copy-to-clipboard.button-secondary.copy-to-clipboard(type='button')
+                | Copy to clipboard
+    footer.main-footer
+      a(href='#{githubUrl}') Source code repository on GitHub
+
