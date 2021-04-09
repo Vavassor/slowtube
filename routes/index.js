@@ -6,7 +6,7 @@ const router = express.Router();
 const apiKey = process.env.YOUTUBE_API_KEY;
 const githubUrl = "https://github.com/Vavassor/slowtube";
 const websiteTitle = "Slowtube";
-const websiteUrl = "https://vavassor.github.io/slowtube";
+const websiteUrl = "https://slowtube.net";
 
 const validateVideoListResponse = (videoListResponse) => {
   return (
@@ -55,9 +55,10 @@ router.get("/", function (req, res, next) {
   });
 });
 
-router.get("/:videoId", (request, response, next) => {
+router.get("/:videoId", async (request, response, next) => {
   const { videoId } = request.params;
   const parts = ["snippet"];
+  const playbackRate = request.query["playback_rate"];
 
   const params = new URLSearchParams();
   params.append("id", videoId);
@@ -65,17 +66,30 @@ router.get("/:videoId", (request, response, next) => {
   params.append("part", parts.join(","));
   const url = `https://www.googleapis.com/youtube/v3/videos?${params}`;
 
-  axios.get(url).then((youtubeResponse) => {
+  try {
+    const youtubeResponse = await axios.get(url);
     const videoInfo = getVideoInfo(youtubeResponse.data, videoId);
+      response.render("index", {
+        githubUrl,
+        openGraphDescription: playbackRate
+          ? `At ${playbackRate}x playback speed`
+          : videoInfo.description,
+        openGraphImage: videoInfo.thumbnailUrl,
+        openGraphTitle: videoInfo.title,
+        title: websiteTitle,
+        websiteUrl,
+      });
+  } catch (error) {
     response.render("index", {
       githubUrl,
-      openGraphDescription: videoInfo.description,
-      openGraphImage: videoInfo.thumbnailUrl,
-      openGraphTitle: videoInfo.title,
+      openGraphDescription:
+        "YouTube videos that start slowed down or sped up.",
+      openGraphImage: `${websiteUrl}/images/slowtube-card.png`,
+      openGraphTitle: websiteTitle,
       title: websiteTitle,
       websiteUrl,
     });
-  });
+  }
 });
 
 module.exports = router;
