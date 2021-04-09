@@ -55,7 +55,7 @@ router.get("/", function (req, res, next) {
   });
 });
 
-router.get("/:videoId", async (request, response, next) => {
+router.get("/:videoId", (request, response, next) => {
   const { videoId } = request.params;
   const parts = ["snippet"];
   const playbackRate = request.query["playback_rate"];
@@ -66,29 +66,32 @@ router.get("/:videoId", async (request, response, next) => {
   params.append("part", parts.join(","));
   const url = `https://www.googleapis.com/youtube/v3/videos?${params}`;
 
-  try {
-    const youtubeResponse = await axios.get(url);
-    const videoInfo = getVideoInfo(youtubeResponse.data, videoId);
-    response.render("index", {
-      githubUrl,
-      openGraphDescription: playbackRate
-        ? `At ${playbackRate}x playback speed`
-        : videoInfo.description,
-      openGraphImage: videoInfo.thumbnailUrl,
-      openGraphTitle: videoInfo.title,
-      title: websiteTitle,
-      websiteUrl,
+  axios
+    .get(url)
+    .then((youtubeResponse) => {
+      const videoInfo = getVideoInfo(youtubeResponse.data, videoId);
+      response.render("index", {
+        githubUrl,
+        openGraphDescription: playbackRate
+          ? `At ${playbackRate}x playback speed`
+          : videoInfo.description,
+        openGraphImage: videoInfo.thumbnailUrl,
+        openGraphTitle: videoInfo.title,
+        title: websiteTitle,
+        websiteUrl,
+      });
+    })
+    .catch((error) => {
+      response.render("index", {
+        githubUrl,
+        openGraphDescription:
+          "YouTube videos that start slowed down or sped up.",
+        openGraphImage: `${websiteUrl}/images/slowtube-card.png`,
+        openGraphTitle: websiteTitle,
+        title: websiteTitle,
+        websiteUrl,
+      });
     });
-  } catch (error) {
-    response.render("index", {
-      githubUrl,
-      openGraphDescription: "YouTube videos that start slowed down or sped up.",
-      openGraphImage: `${websiteUrl}/images/slowtube-card.png`,
-      openGraphTitle: websiteTitle,
-      title: websiteTitle,
-      websiteUrl,
-    });
-  }
 });
 
 module.exports = router;
