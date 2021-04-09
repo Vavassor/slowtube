@@ -25,7 +25,9 @@ const readParameters = () => {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const playbackRateParam = urlSearchParams.get("playback_rate");
   const playbackRate = !!playbackRateParam ? parseFloat(playbackRateParam) : 1;
-  const videoId = urlSearchParams.get("video_id");
+
+  const path = window.location.pathname;
+  const videoId = path.slice(1);
 
   if (!videoId) {
     throw new Error("No video ID provided.");
@@ -155,8 +157,9 @@ const setUpPlaybackRateType = () => {
 const createUrl = (spec) => {
   const urlSearchParams = new URLSearchParams();
   urlSearchParams.set("playback_rate", spec.playbackRate);
-  urlSearchParams.set("video_id", spec.videoId);
-  return `https://vavassor.github.io/slowtube?${urlSearchParams.toString()}`;
+  return `https://vavassor.github.io/slowtube/${
+    spec.videoId
+  }?${urlSearchParams.toString()}`;
 };
 
 const getYoutubeUrlType = (url) => {

@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(name='twitter:card', content='summary')
+    meta(name='twitter:creator', content='@vavassor')
+    meta(property='og:description', content='#{openGraphDescription}')
+    meta(property='og:image', content='#{openGraphImage}')
+    meta(property='og:title', content='#{openGraphTitle}')
+    meta(property='og:type', content='website')
+    title= title
+    link(rel='stylesheet', href='/stylesheets/normalize.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='preconnect', href='https://fonts.gstatic.com')
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400;1,700&display=swap')
+    script(src='/javascripts/index.js' type='text/javascript')
+  body
+    block content
