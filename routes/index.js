@@ -6,7 +6,7 @@ const router = express.Router();
 const apiKey = process.env.YOUTUBE_API_KEY;
 const githubUrl = "https://github.com/Vavassor/slowtube";
 const websiteTitle = "Slowtube";
-const websiteUrl = "https://vavassor.github.io/slowtube";
+const websiteUrl = "https://slowtube.net";
 
 const validateVideoListResponse = (videoListResponse) => {
   return (
